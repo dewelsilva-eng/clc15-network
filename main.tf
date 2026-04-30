@@ -9,7 +9,22 @@ resource "aws_vpc" "terraform_vpc" {
     Owner = "Devops2"
   }
 }
+# Correcao primeira issue
+resource "aws_flow_log" "example" {
+  log_destination      = "arn:aws:s3:::clc15-dewel-terraform"
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.terraform_vpc.id
+}
 
+# Correcao segunda issue
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.terraform_vpc.id
+  
+  tags = {
+    Name = "my-iac-sg"
+  }
+}
 resource "aws_subnet" "subnet_public_1a" {
   vpc_id     = aws_vpc.terraform_vpc.id
   cidr_block = "10.0.1.0/24"
